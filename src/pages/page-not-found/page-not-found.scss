@@ -1,0 +1,109 @@
+.PageNotFound {
+  $s: &;
+  position: relative;
+  height: 100vh;
+  max-height: 726px;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 60px 16px 0px 16px;
+
+  &__text {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  &__num {
+    width: 80%;
+    margin-bottom: 32px;
+
+    h1 {
+      height: 0;
+      visibility: hidden;
+    }
+
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  &__explain {
+    font-size: 32px;
+    line-height: 40px;
+    margin-bottom: 16px;
+  }
+
+  &__desc {
+    font-size: 16px;
+    line-height: 24px;
+    margin-bottom: 32px;
+  }
+
+  &__button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    font-size: 16px;
+    background-color: #4481c3;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 34px;
+    transition: 0.3s;
+    min-height: 56px;
+    position: relative;
+    overflow: hidden;
+
+    &:hover {
+      background-color: #383838;
+    }
+
+    span {
+      position: relative;
+      z-index: 10;
+    }
+  }
+
+  @media all and (min-width: 1024px) {
+    max-height: 100%;
+    padding: 32px;
+    padding-top: 10px;
+
+    &__num {
+      width: 50%;
+      margin-bottom: 34px;
+    }
+
+    &__explain {
+      font-size: 48px;
+      line-height: 56px;
+      margin: 0;
+    }
+
+    &__desc {
+      font-size: 24px;
+      line-height: 32px;
+      margin-bottom: 54px;
+    }
+  }
+
+  @media all and (min-width: 1440px) {
+    &__explain {
+      font-size: 56px;
+      line-height: 64px;
+      margin-bottom: 24px;
+    }
+
+    &__desc {
+      font-size: 24px;
+      line-height: 32px;
+    }
+  }
+}
