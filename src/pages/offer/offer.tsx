@@ -1,6 +1,6 @@
 import NearPlaces from '../../components/near-places/near-places';
 
-function offer() {
+function Offer() {
   return (
     <main className="page__main page__main--offer">
       <section className="offer">
@@ -287,4 +287,4 @@ function offer() {
     </main>
   );
 }
-export default offer;
+export default Offer;
