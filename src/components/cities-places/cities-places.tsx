@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import PlaceCard from '../place-card/place-card';
 import { OffersType } from '../../types/offers';
 import { OfferType } from '../../types/offers';
@@ -6,15 +5,10 @@ import { OfferType } from '../../types/offers';
 type CitiesPlacesProps = {
   count: number;
   offers: OffersType;
+  onCardHover: (offer: OfferType | null) => void;
 };
 
-function CitiesPlaces({ count, offers }: CitiesPlacesProps) {
-  const [, setActiveOffer] = useState<OfferType | null>(null);
-
-  const handleCardHover = (offer: OfferType | null) => {
-    setActiveOffer(offer);
-  };
-
+function CitiesPlaces({ count, offers, onCardHover }: CitiesPlacesProps) {
   return (
     <section className="cities__places places">
       <h2 className="visually-hidden">Places</h2>
@@ -47,7 +41,7 @@ function CitiesPlaces({ count, offers }: CitiesPlacesProps) {
           if (index >= count) {
             return;
           }
-          return <PlaceCard key={el.id} offer={el} onDataCardSend={handleCardHover} />;
+          return <PlaceCard key={el.id} offer={el} onDataCardSend={onCardHover} />;
         })}
       </div>
     </section>
