@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import CitiesPlaces from '../../components/cities-places/cities-places';
-import { OffersType } from '../../types/offers';
+import Map from '../../components/map/map';
+import { OffersType, OfferType } from '../../types/offers'; // ← OfferType импортирован
 
 type MainProps = {
   count: number;
@@ -7,6 +9,14 @@ type MainProps = {
 };
 
 function Main({ count, offers }: MainProps) {
+  const currentCity = offers[0]?.city;
+
+  const [activeOffer, setActiveOffer] = useState<OfferType | null>(null);
+
+  const handleCardHover = (offer: OfferType | null) => {
+    setActiveOffer(offer);
+  };
+
   return (
     <main className="page__main page__main--index">
       <h1 className="visually-hidden">Cities</h1>
@@ -48,9 +58,9 @@ function Main({ count, offers }: MainProps) {
       </div>
       <div className="cities">
         <div className="cities__places-container container">
-          <CitiesPlaces count={count} offers={offers} />
+          <CitiesPlaces count={count} offers={offers} onCardHover={handleCardHover} />
           <div className="cities__right-section">
-            <section className="cities__map map" />
+            <Map city={currentCity} points={offers.slice(0, count)} selectedOfferId={activeOffer?.id} />
           </div>
         </div>
       </div>

@@ -1,11 +1,10 @@
 import NearPlaces from '../../components/near-places/near-places';
-import FormComment from '../../components/form-comment/form-comment';
+import ReviewsList from '../../components/reviews-list/reviews-list';
+import Map from '../../components/map/map';
 import { OffersType } from '../../types/offers';
 import { OfferType } from '../../types/offers';
 import { ReviewsType } from '../../types/reviews';
 import { nanoid } from 'nanoid';
-import { DateFormat } from '../../const/const';
-import { humanizeDate } from '../../utils/utils-dayjs';
 import { getRatingWidth } from '../../utils/utils';
 
 type OfferProps = {
@@ -17,7 +16,8 @@ type OfferProps = {
 function Offer({ offer, offers, reviews }: OfferProps) {
   const { images, isPremium, rating, type, bedrooms, maxAdults, price, goods, host, description } = offer;
 
-  const nearOffers = offers.filter((item) => offer.city.name === item.city.name);
+  const currentCity = offer.city;
+  const nearOffers = offers.filter((item) => currentCity.name === item.city.name);
 
   return (
     <main className="page__main page__main--offer">
@@ -86,42 +86,10 @@ function Offer({ offer, offers, reviews }: OfferProps) {
                 <p className="offer__text">{description || null}</p>
               </div>
             </div>
-            <section className="offer__reviews reviews">
-              <h2 className="reviews__title">
-                Reviews ·<span className="reviews__amount">{reviews && reviews.length}</span>
-              </h2>
-              <ul className="reviews__list">
-                {reviews.map((item) => (
-                  <li key={item.id} className="reviews__item">
-                    <div className="reviews__user user">
-                      <div className="reviews__avatar-wrapper user__avatar-wrapper">
-                        <img className="reviews__avatar user__avatar" src={item.user.avatarUrl || ''} width={54} height={54} alt="Reviews avatar" />
-                      </div>
-                      <span className="reviews__user-name">{item.user.name || null}</span> {item.user.isPro && <span className="offer__user-status">{item.user.isPro && 'Pro'}</span>}
-                    </div>
-                    <div className="reviews__info">
-                      <div className="reviews__rating rating">
-                        <div className="reviews__stars rating__stars">
-                          <span style={{ width: getRatingWidth(item.rating) }} />
-                          <span className="visually-hidden">Rating</span>
-                        </div>
-                      </div>
-                      <p className="reviews__text">{item.comment}</p>
-                      <time className="reviews__time" dateTime={item.date}>
-                        {humanizeDate({
-                          date: item.date,
-                          format: DateFormat.DATE_REVIEW,
-                        })}
-                      </time>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-              <FormComment />
-            </section>
+            <ReviewsList reviews={reviews} />
           </div>
         </div>
-        <section className="offer__map map" />
+        <Map city={currentCity} points={offers.slice(0, 5)} />
       </section>
       <div className="container">
         <NearPlaces nearOffers={nearOffers} />
