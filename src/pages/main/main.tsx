@@ -1,4 +1,5 @@
 import CitiesPlaces from '../../components/cities-places/cities-places';
+import Map from '../../components/map/map';
 import { OffersType } from '../../types/offers';
 
 type MainProps = {
@@ -7,6 +8,8 @@ type MainProps = {
 };
 
 function Main({ count, offers }: MainProps) {
+  const currentCity = offers[0]?.city;
+
   return (
     <main className="page__main page__main--index">
       <h1 className="visually-hidden">Cities</h1>
@@ -50,7 +53,7 @@ function Main({ count, offers }: MainProps) {
         <div className="cities__places-container container">
           <CitiesPlaces count={count} offers={offers} />
           <div className="cities__right-section">
-            <section className="cities__map map" />
+            <Map city={currentCity} points={offers.slice(0, count)} />
           </div>
         </div>
       </div>
