@@ -1,15 +1,20 @@
 import { useState } from 'react';
 import CitiesPlaces from '../../components/cities-places/cities-places';
+import LocationsList from '../locations-list/locations-list';
 import Map from '../../components/map/map';
-import { OffersType, OfferType } from '../../types/offers'; // ← OfferType импортирован
+import { OffersType, OfferType } from '../../types/offers';
+import { useAppSelector } from '../../hooks';
 
 type MainProps = {
-  count: number;
   offers: OffersType;
 };
 
-function Main({ count, offers }: MainProps) {
-  const currentCity = offers[0]?.city;
+function Main({ offers }: MainProps) {
+  // функции, которые мы передаем называются функции селекторы
+  const currentCity = useAppSelector((state) => state.main.currentCityStore);
+
+  // Получаем предложения для выбранного города
+  const currentCityOffers = offers.filter((offer) => offer.city.name === currentCity.name);
 
   const [activeOffer, setActiveOffer] = useState<OfferType | null>(null);
 
@@ -21,46 +26,13 @@ function Main({ count, offers }: MainProps) {
     <main className="page__main page__main--index">
       <h1 className="visually-hidden">Cities</h1>
       <div className="tabs">
-        <section className="locations container">
-          <ul className="locations__list tabs__list">
-            <li className="locations__item">
-              <a className="locations__item-link tabs__item" href="#">
-                <span>Paris</span>
-              </a>
-            </li>
-            <li className="locations__item">
-              <a className="locations__item-link tabs__item" href="#">
-                <span>Cologne</span>
-              </a>
-            </li>
-            <li className="locations__item">
-              <a className="locations__item-link tabs__item" href="#">
-                <span>Brussels</span>
-              </a>
-            </li>
-            <li className="locations__item">
-              <a className="locations__item-link tabs__item tabs__item--active">
-                <span>Amsterdam</span>
-              </a>
-            </li>
-            <li className="locations__item">
-              <a className="locations__item-link tabs__item" href="#">
-                <span>Hamburg</span>
-              </a>
-            </li>
-            <li className="locations__item">
-              <a className="locations__item-link tabs__item" href="#">
-                <span>Dusseldorf</span>
-              </a>
-            </li>
-          </ul>
-        </section>
+        <LocationsList currentCity={currentCity} offers={offers} />
       </div>
       <div className="cities">
         <div className="cities__places-container container">
-          <CitiesPlaces count={count} offers={offers} onCardHover={handleCardHover} />
+          <CitiesPlaces city={currentCity} count={currentCityOffers.length} offers={currentCityOffers} onCardHover={handleCardHover} />
           <div className="cities__right-section">
-            <Map city={currentCity} points={offers.slice(0, count)} selectedOfferId={activeOffer?.id} />
+            <Map city={currentCity} points={currentCityOffers} selectedOfferId={activeOffer?.id} />
           </div>
         </div>
       </div>
