@@ -13,17 +13,16 @@ import { OffersType } from '../../types/offers';
 import { ReviewsType } from '../../types/reviews';
 
 type AppScreenProps = {
-  count: number;
   offers: OffersType;
   reviews: ReviewsType;
 };
 
-function App({ count, offers, reviews }: AppScreenProps) {
+function App({ offers, reviews }: AppScreenProps) {
   return (
     <BrowserRouter>
       <Routes>
         <Route path={AppRoute.Root} element={<Layout />}>
-          <Route index element={<Main offers={offers} count={count} />} />
+          <Route index element={<Main offers={offers} />} />
           <Route path={AppRoute.Login} element={<Login />} />
 
           <Route
