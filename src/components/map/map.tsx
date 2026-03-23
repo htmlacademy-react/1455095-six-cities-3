@@ -36,7 +36,6 @@ function Map({ city, points, selectedOfferId }: MapProps) {
     }
 
     const map = mapInstanceRef.current;
-    map.setView([city.location.latitude, city.location.longitude], city.location.zoom);
 
     if (markersLayerRef.current) {
       markersLayerRef.current.clearLayers();
@@ -57,7 +56,7 @@ function Map({ city, points, selectedOfferId }: MapProps) {
 
       marker.addTo(markersLayerRef.current!);
     });
-  }, [city, points, selectedOfferId]);
+  }, [city.location.latitude, city.location.longitude, city.location.zoom, points, selectedOfferId]);
 
   return <section className="cities__map map" ref={mapRef} style={{ height: '100%', minHeight: '500px', width: '100%' }} />;
 }

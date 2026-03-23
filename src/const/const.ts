@@ -1,3 +1,7 @@
+const Setting = {
+  OffersCount: 4,
+};
+
 enum DateFormat {
   DATE_REVIEW = 'MMMM YYYY',
 }
@@ -15,13 +19,4 @@ const enum AuthorizationStatus {
   Unknown = 'UNKNOWN',
 }
 
-const INITIAL_CITY = {
-  name: 'Paris',
-  location: {
-    latitude: 48.858889,
-    longitude: 2.294444,
-    zoom: 12,
-  },
-};
-
-export { DateFormat, AppRoute, AuthorizationStatus, INITIAL_CITY };
+export { Setting, DateFormat, AppRoute, AuthorizationStatus };
