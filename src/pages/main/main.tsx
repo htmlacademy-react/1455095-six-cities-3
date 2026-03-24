@@ -10,11 +10,8 @@ type MainProps = {
 };
 
 function Main({ offers }: MainProps) {
-  // функции, которые мы передаем называются функции селекторы
   const currentCity = useAppSelector((state) => state.main.currentCityStore);
-
-  // Получаем предложения для выбранного города
-  const currentCityOffers = offers.filter((offer) => offer.city.name === currentCity.name);
+  const sortedOffers = useAppSelector((state) => state.main.currentSortingOffers);
 
   const [activeOffer, setActiveOffer] = useState<OfferType | null>(null);
 
@@ -30,13 +27,14 @@ function Main({ offers }: MainProps) {
       </div>
       <div className="cities">
         <div className="cities__places-container container">
-          <CitiesPlaces city={currentCity} count={currentCityOffers.length} offers={currentCityOffers} onCardHover={handleCardHover} />
+          <CitiesPlaces city={currentCity} count={sortedOffers.length} offers={sortedOffers} onCardHover={handleCardHover} />
           <div className="cities__right-section">
-            <Map city={currentCity} points={currentCityOffers} selectedOfferId={activeOffer?.id} />
+            <Map city={currentCity} points={sortedOffers} selectedOfferId={activeOffer?.id} />
           </div>
         </div>
       </div>
     </main>
   );
 }
+
 export default Main;

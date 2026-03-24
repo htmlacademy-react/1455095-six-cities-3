@@ -24,4 +24,6 @@ const INITIAL_CITY = {
   },
 };
 
-export { DateFormat, AppRoute, AuthorizationStatus, INITIAL_CITY };
+const SORT_OPTION = ['Popular', 'Price: low to high', 'Price: high to low', 'Top rated first'] as const;
+
+export { DateFormat, AppRoute, AuthorizationStatus, INITIAL_CITY, SORT_OPTION };
