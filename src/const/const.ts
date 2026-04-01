@@ -26,4 +26,16 @@ const INITIAL_CITY = {
 
 const SORT_OPTION = ['Popular', 'Price: low to high', 'Price: high to low', 'Top rated first'] as const;
 
-export { DateFormat, AppRoute, AuthorizationStatus, INITIAL_CITY, SORT_OPTION };
+const TIMEOUT_SHOW_ERROR = 2000;
+
+enum APIRoute {
+  Login = '/login',
+  Logout = '/logout',
+  Favorites = '/favorite',
+  NearPlace = '/offers/{offerId}/nearby',
+  Offer = '/offers/',
+  Offers = '/offers',
+  Comments = '/comments/{offerId}',
+}
+
+export { DateFormat, AppRoute, AuthorizationStatus, INITIAL_CITY, SORT_OPTION, TIMEOUT_SHOW_ERROR, APIRoute };

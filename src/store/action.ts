@@ -1,15 +1,11 @@
 import { createAction } from '@reduxjs/toolkit';
-import { City, OffersType } from '../types/offers';
-import { SortType } from '../types/sorting';
+import { OffersType } from '../types/offers';
+import { AuthorizationStatus } from '../const/const';
 
-export const toggleCity = createAction('main/toggleCity', (value: City) => ({
-  payload: value,
-}));
+export const loadOffers = createAction<OffersType>('main/loadOffers');
 
-export const renderOffers = createAction('main/renderOffers', (value: OffersType) => ({
-  payload: value,
-}));
+export const requireAuthorization = createAction<AuthorizationStatus>('user/requireAuthorization');
 
-export const sortOffers = createAction('main/sortOffers', (value: SortType) => ({
-  payload: value,
-}));
+export const setError = createAction<string | null>('setError');
+
+export const setOffersDataLoadingStatus = createAction<boolean>('data/setOffersDataLoadingStatus');

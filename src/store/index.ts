@@ -1,18 +1,17 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { updateMainCity } from './reducer';
+import { createAPI } from '../services/api';
+
+export const api = createAPI();
 
 export const store = configureStore({
-  // reducer: updateMainCity // configureStore ожидает объект с полем reducer
   reducer: {
     main: updateMainCity,
-    // другие редьюсеры
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      thunk: {
+        extraArgument: api,
+      },
+    }),
 });
-
-// важно.
-// Глобальное глоб хранилище хранится в памяти на клиенте, state нигде не сохраняется
-
-// const store = configureStore({
-//   reducer: updateMainCity,
-//   preloadedState: 0,
-// });
