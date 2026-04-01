@@ -3,7 +3,7 @@ import { OffersType, City } from '../../types/offers';
 type LocationsListProps = {
   currentCity: City;
   offers: OffersType;
-  onDataCitySend: (param: City | null) => void;
+  onDataCitySend: (param: City) => void;
 };
 
 function LocationsList({ currentCity, offers, onDataCitySend }: LocationsListProps) {

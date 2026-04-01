@@ -17,7 +17,7 @@ function Main({ offers }: MainProps) {
     setActiveOffer(offer);
   };
 
-  const handleCityClick = (param: City | null) => {
+  const handleCityClick = (param: City) => {
     setCurrentCity(param);
   };
 
