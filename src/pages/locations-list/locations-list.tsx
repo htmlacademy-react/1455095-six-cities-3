@@ -1,20 +1,12 @@
 import { OffersType, City } from '../../types/offers';
-import { useAppDispatch } from '../../hooks';
-import { toggleCity } from '../../store/action';
 
 type LocationsListProps = {
   currentCity: City;
   offers: OffersType;
+  onDataCitySend: (param: City) => void;
 };
 
-function LocationsList({ currentCity, offers }: LocationsListProps) {
-  const dispatch = useAppDispatch();
-
-  const handleCityClick = (city: City) => (event: React.MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault();
-    dispatch(toggleCity(city));
-  };
-
+function LocationsList({ currentCity, offers, onDataCitySend }: LocationsListProps) {
   function getUniqueCities(offersArray: OffersType): City[] {
     const uniqueCities: City[] = [];
 
@@ -30,12 +22,16 @@ function LocationsList({ currentCity, offers }: LocationsListProps) {
 
   const uniqueCities = getUniqueCities(offers);
 
+  const handleCityClick = (city: City) => {
+    onDataCitySend(city);
+  };
+
   return (
     <section className="locations container">
       <ul className="locations__list tabs__list">
         {uniqueCities.map((item) => (
           <li key={item.name} className="locations__item">
-            <a className={`locations__item-link tabs__item ${currentCity.name === item.name ? 'tabs__item--active' : ''}`} href="#" onClick={handleCityClick(item)}>
+            <a className={`locations__item-link tabs__item ${currentCity.name === item.name ? 'tabs__item--active' : ''}`} href="javascript:void(0)" onClick={() => handleCityClick(item)}>
               <span>{item.name}</span>
             </a>
           </li>
