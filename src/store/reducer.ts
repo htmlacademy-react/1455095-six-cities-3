@@ -1,7 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { OffersType } from '../types/offers';
 import { AuthorizationStatus } from '../const/const';
-import { loadOffers, requireAuthorization, setError, setOffersDataLoadingStatus } from './action';
+import { loadOffers, requireAuthorization, setError, setOffersDataLoadingStatus, setUserEmail } from './action';
 
 type Initial = {
   currentOffers: OffersType;
@@ -17,7 +17,7 @@ const initialState: Initial = {
   isOffersDataLoadingLoading: false,
 };
 
-export const updateMainCity = createReducer(initialState, (builder) => {
+export const reducer = createReducer(initialState, (builder) => {
   builder
     .addCase(loadOffers, (state, action) => {
       state.currentOffers = action.payload;
