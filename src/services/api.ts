@@ -1,7 +1,7 @@
 import axios, { AxiosInstance, InternalAxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
 import { StatusCodes } from 'http-status-codes';
 import { getToken } from './token';
-import { processErrorHandle } from './process-error-handle';
+import { toast } from 'react-toastify';
 
 const BACKEND_URL = 'https://15.design.htmlacademy.pro/six-cities/';
 
@@ -42,7 +42,9 @@ export const createAPI = (): AxiosInstance => {
       if (error.response && shouldDisplayError(error.response)) {
         const detailMessage = error.response.data;
 
-        processErrorHandle(detailMessage.message);
+        if (detailMessage?.message) {
+          toast.error(detailMessage.message);
+        }
       }
 
       throw error;

@@ -4,6 +4,7 @@ import LocationsList from '../locations-list/locations-list';
 import Map from '../../components/map/map';
 import { OffersType, OfferType, City } from '../../types/offers';
 import { INITIAL_CITY } from '../../const/const';
+import CitiesEmpty from '../../components/cities-empty/cities-empty';
 
 type MainProps = {
   offers: OffersType;
@@ -28,12 +29,16 @@ function Main({ offers }: MainProps) {
         <LocationsList currentCity={currentCity} offers={offers} onDataCitySend={handleCityClick} />
       </div>
       <div className="cities">
-        <div className="cities__places-container container">
-          <CitiesPlaces city={currentCity} offers={offers} onCardHover={handleCardHover} />
-          <div className="cities__right-section">
-            <Map city={currentCity} points={offers} selectedOfferId={activeOffer?.id} />
+        {offers.length < 1 ? (
+          <CitiesEmpty />
+        ) : (
+          <div className="cities__places-container container">
+            <CitiesPlaces city={currentCity} offers={offers} onCardHover={handleCardHover} />
+            <div className="cities__right-section">
+              <Map city={currentCity} points={offers} selectedOfferId={activeOffer?.id} />
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </main>
   );

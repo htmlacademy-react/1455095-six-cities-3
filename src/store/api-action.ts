@@ -2,9 +2,9 @@ import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch, State } from '../types/state';
 import { OffersType } from '../types/offers';
-import { loadOffers, requireAuthorization, setError, setOffersDataLoadingStatus } from './action';
-import { saveToken, dropToken } from '../services/token';
-import { APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR } from '../const/const';
+import { loadOffers, requireAuthorization, setError, setOffersDataLoadingStatus, redirectToRoute } from './action';
+import { saveToken, saveEmail, dropToken } from '../services/token';
+import { AppRoute, APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR } from '../const/const';
 import { AuthData } from '../types/auth-data';
 import { UserData } from '../types/user-data';
 import { store } from './';
@@ -45,6 +45,7 @@ export const checkAuthAction = createAsyncThunk<
     // ответ с кодом 200-299
   } catch {
     dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
+    dropToken();
   }
 });
 
@@ -61,7 +62,9 @@ export const loginAction = createAsyncThunk<
     data: { token },
   } = await api.post<UserData>(APIRoute.Login, { email, password });
   saveToken(token);
+  saveEmail(email);
   dispatch(requireAuthorization(AuthorizationStatus.Auth));
+  dispatch(redirectToRoute(AppRoute.Root));
 });
 
 export const logoutAction = createAsyncThunk<

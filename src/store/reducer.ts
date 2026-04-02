@@ -17,7 +17,7 @@ const initialState: Initial = {
   isOffersDataLoadingLoading: false,
 };
 
-export const updateMainCity = createReducer(initialState, (builder) => {
+export const reducer = createReducer(initialState, (builder) => {
   builder
     .addCase(loadOffers, (state, action) => {
       state.currentOffers = action.payload;
