@@ -1,7 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { OffersType } from '../types/offers';
 import { AuthorizationStatus } from '../const/const';
-import { loadOffers, requireAuthorization, setError, setOffersDataLoadingStatus, setUserEmail } from './action';
+import { loadOffers, requireAuthorization, setError, setOffersDataLoadingStatus } from './action';
 
 type Initial = {
   currentOffers: OffersType;
