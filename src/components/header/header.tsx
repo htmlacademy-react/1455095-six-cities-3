@@ -6,6 +6,10 @@ import { useAppSelector, useAppDispatch } from '../../hooks';
 import { logoutAction } from '../../store/api-action';
 import { getEmail } from '../../services/token';
 
+// доработать header
+// почему я приняла решение делать в локад сторадж, а не в сторе
+// amsterdam который - постоянно меняется разное
+
 function Header() {
   const dispatch = useAppDispatch(); // 👈 Добавьте эту строку
   const authorizationStatus = useAppSelector((state) => state.main.authorizationStatus);
