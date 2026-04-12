@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import Logo from '../logo/logo';
 import { AuthorizationStatus } from '../../const/const';
+import { getAuthorizationStatus } from '../../store/user-process/user-process.selectors.ts';
 import { AppRoute } from '../../const/const';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { logoutAction } from '../../store/api-action';
@@ -11,9 +12,11 @@ import { getEmail } from '../../services/token';
 // amsterdam который - постоянно меняется разное
 
 function Header() {
-  const dispatch = useAppDispatch(); // 👈 Добавьте эту строку
-  const authorizationStatus = useAppSelector((state) => state.main.authorizationStatus);
+  const dispatch = useAppDispatch();
+  const isAuthChecked = useAppSelector(getAuthorizationStatus);
   const userLogin = getEmail();
+
+  console.log(isAuthChecked);
 
   return (
     <header className="header">
@@ -26,7 +29,7 @@ function Header() {
           </div>
           <nav className="header__nav">
             <ul className="header__nav-list">
-              {authorizationStatus === AuthorizationStatus.Auth ? (
+              {isAuthChecked === AuthorizationStatus.Auth ? (
                 <>
                   <li className="header__nav-item user">
                     <a className="header__nav-link header__nav-link--profile" href="#">

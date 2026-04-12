@@ -1,3 +1,5 @@
+
+
 import { OfferType } from '../../types/offers';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const/const';
