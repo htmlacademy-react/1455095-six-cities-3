@@ -1,26 +1,24 @@
-import { useState } from 'react';
-import CitiesPlaces from '../../components/cities-places/cities-places';
+import { memo, useState, useCallback, useMemo } from 'react';
+
 import LocationsList from '../locations-list/locations-list';
-import Map from '../../components/map/map';
-import { OffersType, OfferType, City } from '../../types/offers';
+
+import { OffersType, City } from '../../types/offers';
 import { INITIAL_CITY } from '../../const/const';
 import CitiesEmpty from '../../components/cities-empty/cities-empty';
+import CitiesContainer from '../../components/cities-container/cities-container';
 
 type MainProps = {
   offers: OffersType;
 };
 
 function Main({ offers }: MainProps) {
-  const [activeOffer, setActiveOffer] = useState<OfferType | null>(null);
   const [currentCity, setCurrentCity] = useState<City>(INITIAL_CITY);
 
-  const handleCardHover = (offer: OfferType | null) => {
-    setActiveOffer(offer);
-  };
-
-  const handleCityClick = (param: City) => {
+  const handleCityClick = useCallback((param: City) => {
     setCurrentCity(param);
-  };
+  }, []);
+
+  const hasNoOffers = useMemo(() => offers.length < 1, [offers.length]);
 
   return (
     <main className="page__main page__main--index">
@@ -28,20 +26,11 @@ function Main({ offers }: MainProps) {
       <div className="tabs">
         <LocationsList currentCity={currentCity} offers={offers} onDataCitySend={handleCityClick} />
       </div>
-      <div className="cities">
-        {offers.length < 1 ? (
-          <CitiesEmpty />
-        ) : (
-          <div className="cities__places-container container">
-            <CitiesPlaces city={currentCity} offers={offers} onCardHover={handleCardHover} />
-            <div className="cities__right-section">
-              <Map city={currentCity} points={offers} selectedOfferId={activeOffer?.id} />
-            </div>
-          </div>
-        )}
-      </div>
+      <div className="cities">{hasNoOffers ? <CitiesEmpty /> : <CitiesContainer currentCity={currentCity} offers={offers} />}</div>
     </main>
   );
 }
 
-export default Main;
+const MemoizedMain = memo(Main);
+
+export default MemoizedMain;

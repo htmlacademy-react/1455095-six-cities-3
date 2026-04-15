@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState } from 'react';
 import { SORT_OPTION } from '../../const/const';
 import { SortType } from '../../types/sorting';
@@ -10,10 +11,17 @@ type PlacesSortingProps = {
 function PlacesSorting({ currentSortType, onDataSortTypeSend }: PlacesSortingProps) {
   const [isOpen, setIsOpen] = useState(false);
 
+  const toggleSorting = () => setIsOpen(!isOpen);
+
+  const handleSortChange = (option: SortType) => {
+    onDataSortTypeSend(option);
+    setIsOpen(false);
+  };
+
   return (
-    <form className="places__sorting" action="#" method="get" onClick={() => setIsOpen(!isOpen)}>
+    <form className="places__sorting" action="#" method="get">
       <span className="places__sorting-caption">Sort by </span>
-      <span className="places__sorting-type">
+      <span className="places__sorting-type" onClick={toggleSorting}>
         {currentSortType}
         <svg className="places__sorting-arrow" width={7} height={4}>
           <use xlinkHref="#icon-arrow-select" />
@@ -26,8 +34,9 @@ function PlacesSorting({ currentSortType, onDataSortTypeSend }: PlacesSortingPro
             key={option}
             className={`places__option ${currentSortType === option ? 'places__option--active' : ''}`}
             tabIndex={0}
-            onClick={() => {
-              onDataSortTypeSend(option);
+            onClick={(e) => {
+              e.stopPropagation();
+              handleSortChange(option);
             }}
           >
             {option}
@@ -38,4 +47,6 @@ function PlacesSorting({ currentSortType, onDataSortTypeSend }: PlacesSortingPro
   );
 }
 
-export default PlacesSorting;
+const MemoizedPlacesSorting = React.memo(PlacesSorting);
+
+export default MemoizedPlacesSorting;

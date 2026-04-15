@@ -9,11 +9,11 @@ import { City, OfferType } from '../../types/offers';
 
 type MapProps = {
   city: City;
-  points: OfferType[];
+  offers: OfferType[];
   selectedOfferId?: string;
 };
 
-function Map({ city, points, selectedOfferId }: MapProps) {
+function Map({ city, offers, selectedOfferId }: MapProps) {
   const mapRef = useRef<HTMLDivElement | null>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
   const markersLayerRef = useRef<L.LayerGroup | null>(null);
@@ -44,7 +44,7 @@ function Map({ city, points, selectedOfferId }: MapProps) {
       markersLayerRef.current = L.layerGroup().addTo(map);
     }
 
-    points.forEach((offer) => {
+    offers.forEach((offer) => {
       const isActive = selectedOfferId === offer.id;
 
       const icon = L.icon({
@@ -57,7 +57,7 @@ function Map({ city, points, selectedOfferId }: MapProps) {
 
       marker.addTo(markersLayerRef.current!);
     });
-  }, [city, points, selectedOfferId]);
+  }, [city, offers, selectedOfferId]);
 
   return <section className="cities__map map" ref={mapRef} style={{ height: '100%', minHeight: '500px', width: '100%' }} />;
 }
