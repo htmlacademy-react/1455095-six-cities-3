@@ -31,7 +31,14 @@ function LocationsList({ currentCity, offers, onDataCitySend }: LocationsListPro
       <ul className="locations__list tabs__list">
         {uniqueCities.map((item) => (
           <li key={item.name} className="locations__item">
-            <a className={`locations__item-link tabs__item ${currentCity.name === item.name ? 'tabs__item--active' : ''}`} href="javascript:void(0)" onClick={() => handleCityClick(item)}>
+            <a
+              className={`locations__item-link tabs__item ${currentCity.name === item.name ? 'tabs__item--active' : ''}`}
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                handleCityClick(item);
+              }}
+            >
               <span>{item.name}</span>
             </a>
           </li>

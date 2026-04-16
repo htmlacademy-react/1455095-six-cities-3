@@ -1,21 +1,21 @@
-enum DateFormat {
+export enum DateFormat {
   DATE_REVIEW = 'MMMM YYYY',
 }
 
-enum AppRoute {
+export enum AppRoute {
   Login = '/login',
   Favorites = '/favorites',
   Offer = '/offer:',
   Root = '/',
 }
 
-const enum AuthorizationStatus {
+export enum AuthorizationStatus {
   Auth = 'AUTH',
   NoAuth = 'NO_AUTH',
   Unknown = 'UNKNOWN',
 }
 
-const INITIAL_CITY = {
+export const INITIAL_CITY = {
   name: 'Paris',
   location: {
     latitude: 48.858889,
@@ -24,11 +24,11 @@ const INITIAL_CITY = {
   },
 };
 
-const SORT_OPTION = ['Popular', 'Price: low to high', 'Price: high to low', 'Top rated first'] as const;
+export const SORT_OPTION = ['Popular', 'Price: low to high', 'Price: high to low', 'Top rated first'] as const;
 
-const TIMEOUT_SHOW_ERROR = 2000;
+export const TIMEOUT_SHOW_ERROR = 2000;
 
-enum APIRoute {
+export enum APIRoute {
   Login = '/login',
   Logout = '/logout',
   Favorites = '/favorite',
@@ -38,4 +38,8 @@ enum APIRoute {
   Comments = '/comments/{offerId}',
 }
 
-export { DateFormat, AppRoute, AuthorizationStatus, INITIAL_CITY, SORT_OPTION, TIMEOUT_SHOW_ERROR, APIRoute };
+export enum NameSpace {
+  Data = 'DATA',
+  App = 'APP',
+  User = 'USER',
+}
