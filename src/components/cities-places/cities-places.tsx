@@ -1,33 +1,21 @@
-import { memo, useState, useMemo, useCallback } from 'react';
+import { memo, useState, useCallback } from 'react';
+import { useAppSelector } from '../../hooks';
+import { getSortedOffers } from '../../store/offers-data/offers-data.selectors';
 import PlaceCard from '../place-card/place-card';
 import PlacesSorting from '../places-sorting/places-sorting';
-import { OffersType, OfferType, City } from '../../types/offers';
+import { OfferType, City } from '../../types/offers';
 import { SortType } from '../../types/sorting';
 import { SORT_OPTION } from '../../const/const';
 
 type CitiesPlacesProps = {
   city: City;
-  offers: OffersType;
   onCardHover: (offer: OfferType | null) => void;
 };
 
-function CitiesPlaces({ city, offers, onCardHover }: CitiesPlacesProps) {
+function CitiesPlaces({ city, onCardHover }: CitiesPlacesProps) {
   const [currentSortType, setCurrentSortType] = useState<SortType>(SORT_OPTION[0]);
 
-  const sortedOffers = useMemo((): OffersType => {
-    const offersArr = offers.filter((item: OfferType) => item.city.name === city.name);
-
-    switch (currentSortType) {
-      case 'Price: low to high':
-        return [...offersArr].sort((a, b) => a.price - b.price);
-      case 'Price: high to low':
-        return [...offersArr].sort((a, b) => b.price - a.price);
-      case 'Top rated first':
-        return [...offersArr].sort((a, b) => b.rating - a.rating);
-      default:
-        return offersArr;
-    }
-  }, [offers, city.name, currentSortType]);
+  const sortedOffers = useAppSelector((state) => getSortedOffers(state, city, currentSortType));
 
   const handleSortClick = useCallback((param: SortType) => {
     setCurrentSortType(param);
@@ -41,8 +29,8 @@ function CitiesPlaces({ city, offers, onCardHover }: CitiesPlacesProps) {
       </b>
       <PlacesSorting currentSortType={currentSortType} onDataSortTypeSend={handleSortClick} />
       <div className="cities__places-list places__list tabs__content">
-        {sortedOffers.slice(0, 4).map((el) => (
-          <PlaceCard key={el.id} offer={el} onDataCardSend={onCardHover} />
+        {sortedOffers.map((offer) => (
+          <PlaceCard key={offer.id} offer={offer} onDataCardSend={onCardHover} />
         ))}
       </div>
     </section>

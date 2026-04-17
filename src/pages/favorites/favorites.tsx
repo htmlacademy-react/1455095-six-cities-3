@@ -1,24 +1,47 @@
-import { OffersType } from '../../types/offers';
+import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { fetchFavoritesAction } from '../../store/api-action';
+import { getOffers } from '../../store/offers-data/offers-data.selectors';
+import { Link } from 'react-router-dom';
+import { AppRoute } from '../../const/const';
+import FavoriteButton from '../../components/favorite-button/favorite-button';
 
-type FavoritesProps = {
-  offers: OffersType;
-};
+function Favorites() {
+  const dispatch = useAppDispatch();
+  const offers = useAppSelector(getOffers);
 
-function Favorites({ offers }: FavoritesProps) {
-  const favoritesOffers = offers.filter((offer) => offer.isFavorite === true);
+  useEffect(() => {
+    dispatch(fetchFavoritesAction());
+  }, [dispatch]);
 
-  const offersByCityMap = new Map<string, OffersType>();
+  const favoritesOffers = offers.filter((offer) => offer.isFavorite);
 
-  favoritesOffers.forEach((offer) => {
-    const city = offer.city.name;
-    if (offersByCityMap.has(city)) {
-      offersByCityMap.get(city)!.push(offer);
-    } else {
-      offersByCityMap.set(city, [offer]);
+  const offersByCity = favoritesOffers.reduce<Record<string, typeof favoritesOffers>>((acc, offer) => {
+    const cityName = offer.city.name;
+    if (!acc[cityName]) {
+      acc[cityName] = [];
     }
-  });
+    acc[cityName].push(offer);
+    return acc;
+  }, {});
 
-  const cityEntries = Array.from(offersByCityMap.entries());
+  const cityEntries = Object.entries(offersByCity);
+
+  if (favoritesOffers.length === 0) {
+    return (
+      <main className="page__main page__main--favorites page__main--favorites-empty">
+        <div className="page__favorites-container container">
+          <section className="favorites favorites--empty">
+            <h1 className="visually-hidden">Favorites (empty)</h1>
+            <div className="favorites__status-wrapper">
+              <b className="favorites__status">Nothing yet saved.</b>
+              <p className="favorites__status-description">Save properties to narrow down search or plan your future trips.</p>
+            </div>
+          </section>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="page__main page__main--favorites">
@@ -30,9 +53,9 @@ function Favorites({ offers }: FavoritesProps) {
               <li key={cityName} className="favorites__locations-items">
                 <div className="favorites__locations locations locations--current">
                   <div className="locations__item">
-                    <a className="locations__item-link" href="#">
+                    <Link className="locations__item-link" to={AppRoute.Root}>
                       <span>{cityName}</span>
-                    </a>
+                    </Link>
                   </div>
                 </div>
                 <div className="favorites__places">
@@ -44,9 +67,9 @@ function Favorites({ offers }: FavoritesProps) {
                         </div>
                       )}
                       <div className="favorites__image-wrapper place-card__image-wrapper">
-                        <a href="#">
+                        <Link to={`${AppRoute.Offer}${offer.id}`}>
                           <img className="place-card__image" src={offer.previewImage} width={150} height={110} alt={offer.title} />
-                        </a>
+                        </Link>
                       </div>
                       <div className="favorites__card-info place-card__info">
                         <div className="place-card__price-wrapper">
@@ -54,12 +77,7 @@ function Favorites({ offers }: FavoritesProps) {
                             <b className="place-card__price-value">€{offer.price}</b>
                             <span className="place-card__price-text">/&nbsp;night</span>
                           </div>
-                          <button className={`place-card__bookmark-button button ${offer.isFavorite ? 'place-card__bookmark-button--active' : ''}`} type="button">
-                            <svg className="place-card__bookmark-icon" width={18} height={19}>
-                              <use xlinkHref="#icon-bookmark" />
-                            </svg>
-                            <span className="visually-hidden">{offer.isFavorite ? 'In bookmarks' : 'To bookmarks'}</span>
-                          </button>
+                          <FavoriteButton offerId={offer.id} isFavorite={offer.isFavorite} buttonType="card" />
                         </div>
                         <div className="place-card__rating rating">
                           <div className="place-card__stars rating__stars">
@@ -68,7 +86,7 @@ function Favorites({ offers }: FavoritesProps) {
                           </div>
                         </div>
                         <h2 className="place-card__name">
-                          <a href="#">{offer.title}</a>
+                          <Link to={`${AppRoute.Offer}${offer.id}`}>{offer.title}</Link>
                         </h2>
                         <p className="place-card__type">{offer.type}</p>
                       </div>
@@ -83,4 +101,5 @@ function Favorites({ offers }: FavoritesProps) {
     </main>
   );
 }
+
 export default Favorites;

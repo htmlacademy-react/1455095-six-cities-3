@@ -5,8 +5,9 @@ export enum DateFormat {
 export enum AppRoute {
   Login = '/login',
   Favorites = '/favorites',
-  Offer = '/offer:',
+  Offer = '/offer/',
   Root = '/',
+  NotFound = '/404',
 }
 
 export enum AuthorizationStatus {
@@ -32,14 +33,14 @@ export enum APIRoute {
   Login = '/login',
   Logout = '/logout',
   Favorites = '/favorite',
-  NearPlace = '/offers/{offerId}/nearby',
   Offer = '/offers/',
   Offers = '/offers',
-  Comments = '/comments/{offerId}',
+  Comments = '/comments',
 }
 
 export enum NameSpace {
   Data = 'DATA',
   App = 'APP',
   User = 'USER',
+  CurrentOffer = 'CURRENT_OFFER',
 }

@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { OffersType, OfferType, City } from '../../types/offers';
 import CitiesPlaces from '../cities-places/cities-places';
 import Map from '../map/map';
@@ -11,15 +11,17 @@ type CitiesContainerProps = {
 function CitiesContainer({ currentCity, offers }: CitiesContainerProps) {
   const [activeOffer, setActiveOffer] = useState<OfferType | null>(null);
 
+  const filteredOffers = useMemo(() => offers.filter((offer) => offer.city.name === currentCity.name), [offers, currentCity.name]);
+
   const handleCardHover = useCallback((offer: OfferType | null) => {
     setActiveOffer(offer);
   }, []);
 
   return (
     <div className="cities__places-container container">
-      <CitiesPlaces city={currentCity} offers={offers} onCardHover={handleCardHover} />
+      <CitiesPlaces city={currentCity} onCardHover={handleCardHover} />
       <div className="cities__right-section">
-        <Map city={currentCity} offers={offers} selectedOfferId={activeOffer?.id} />
+        <Map city={currentCity} offers={filteredOffers} selectedOfferId={activeOffer?.id} />
       </div>
     </div>
   );

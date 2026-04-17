@@ -4,7 +4,6 @@ import { getToken } from './token';
 import { toast } from 'react-toastify';
 
 const BACKEND_URL = 'https://15.design.htmlacademy.pro/six-cities/';
-
 const REQUEST_TIMEOUT = 5000;
 
 type DetailMessageType = {
@@ -39,9 +38,12 @@ export const createAPI = (): AxiosInstance => {
   api.interceptors.response.use(
     (response) => response,
     (error: AxiosError<DetailMessageType>) => {
-      if (error.response && shouldDisplayError(error.response)) {
-        const detailMessage = error.response.data;
+      const isCheckAuthRequest = error.config?.url === '/login' && error.config?.method === 'get';
+      const isFavoriteRequest = error.config?.url?.startsWith('/favorite');
+      const shouldSkipToast = isCheckAuthRequest || isFavoriteRequest;
 
+      if (!shouldSkipToast && error.response && shouldDisplayError(error.response)) {
+        const detailMessage = error.response.data;
         if (detailMessage?.message) {
           toast.error(detailMessage.message);
         }

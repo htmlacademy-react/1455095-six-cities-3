@@ -1,9 +1,11 @@
 import { store } from '../store';
 import { AuthorizationStatus } from '../const/const';
 import { OffersType } from './offers';
+import { UserData } from './user-data';
 
 export type UserProcess = {
   authorizationStatus: AuthorizationStatus;
+  userData: UserData | null;
 };
 
 export type OffersData = {
