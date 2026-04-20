@@ -2,7 +2,6 @@ import { ReviewsType } from '../../types/reviews';
 import { getRatingWidth } from '../../utils/utils';
 import { DateFormat } from '../../const/const';
 import { humanizeDate } from '../../utils/utils-dayjs';
-import FormComment from '../form-comment/form-comment';
 
 type ReviewsListProps = {
   reviews: ReviewsType;
@@ -41,7 +40,6 @@ function ReviewsList({ reviews }: ReviewsListProps) {
           </li>
         ))}
       </ul>
-      <FormComment />
     </section>
   );
 }

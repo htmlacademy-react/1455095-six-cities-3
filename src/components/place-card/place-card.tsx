@@ -3,6 +3,7 @@ import { OfferType } from '../../types/offers';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const/const';
 import { getRatingWidth } from '../../utils/utils';
+import FavoriteButton from '../favorite-button/favorite-button';
 
 type PlaceCardProps = {
   offer: OfferType;
@@ -10,7 +11,7 @@ type PlaceCardProps = {
 };
 
 function PlaceCard({ offer, onDataCardSend }: PlaceCardProps) {
-  const { isPremium, previewImage, price, rating, title, type } = offer;
+  const { id, isPremium, previewImage, price, rating, title, type, isFavorite } = offer;
 
   const handleMouseEnter = () => {
     if (onDataCardSend) {
@@ -32,31 +33,26 @@ function PlaceCard({ offer, onDataCardSend }: PlaceCardProps) {
         </div>
       )}
       <div className="cities__image-wrapper place-card__image-wrapper">
-        <Link to={AppRoute.Offer + offer.id}>
+        <Link to={`${AppRoute.Offer}${id}`}>
           <img className="place-card__image" src={previewImage} width={260} height={200} alt="Place image" />
         </Link>
       </div>
       <div className="place-card__info">
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
-            <b className="place-card__price-value">€{price && price}</b>
+            <b className="place-card__price-value">€{price}</b>
             <span className="place-card__price-text">/&nbsp;night</span>
           </div>
-          <button className={`place-card__bookmark-button button ${offer.isFavorite && 'place-card__bookmark-button--active'}`} type="button">
-            <svg className="place-card__bookmark-icon" width={18} height={19}>
-              <use xlinkHref="#icon-bookmark" />
-            </svg>
-            <span className="visually-hidden">To bookmarks</span>
-          </button>
+          <FavoriteButton offerId={id} isFavorite={isFavorite} buttonType="card" />
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{ width: rating ? getRatingWidth(rating) : '0%' }} />
+            <span style={{ width: getRatingWidth(rating) }} />
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={AppRoute.Offer + offer.id}>{title}</Link>
+          <Link to={`${AppRoute.Offer}${id}`}>{title}</Link>
         </h2>
         <p className="place-card__type">{type ? type[0].toUpperCase() + type.slice(1) : ''}</p>
       </div>
@@ -65,5 +61,4 @@ function PlaceCard({ offer, onDataCardSend }: PlaceCardProps) {
 }
 
 const MemoizedPlaceCard = memo(PlaceCard);
-
 export default MemoizedPlaceCard;

@@ -1,66 +1,67 @@
-import { Link } from 'react-router-dom';
-import Logo from '../logo/logo';
-import { AuthorizationStatus } from '../../const/const';
-import { getAuthorizationStatus } from '../../store/user-process/user-process.selectors.ts';
-import { AppRoute } from '../../const/const';
+import { Link, useLocation } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../hooks';
+import { getAuthorizationStatus } from '../../store/user-process/user-process.selectors';
+import { getOffers } from '../../store/offers-data/offers-data.selectors';
 import { logoutAction } from '../../store/api-action';
+import { AuthorizationStatus, AppRoute } from '../../const/const';
 import { getEmail } from '../../services/token';
-
-// доработать header
-// почему я приняла решение делать в локад сторадж, а не в сторе
-// amsterdam который - постоянно меняется разное
 
 function Header() {
   const dispatch = useAppDispatch();
-  const isAuthChecked = useAppSelector(getAuthorizationStatus);
-  const userLogin = getEmail();
+  const location = useLocation();
+  const authStatus = useAppSelector(getAuthorizationStatus);
+  const offers = useAppSelector(getOffers);
 
-  console.log(isAuthChecked);
+  const isAuth = authStatus === AuthorizationStatus.Auth;
+  const favoriteCount = offers.filter((offer) => offer.isFavorite).length;
+  const userEmail = getEmail();
+
+  const isLoginPage = location.pathname === `${AppRoute.Login}`;
+
+  const handleLogout = (evt: React.MouseEvent) => {
+    evt.preventDefault();
+    dispatch(logoutAction());
+  };
 
   return (
     <header className="header">
       <div className="container">
         <div className="header__wrapper">
           <div className="header__left">
-            <Link to="/" className="header__logo-link">
-              <Logo />
+            <Link className={`header__logo-link ${!isLoginPage ? 'header__logo-link--active' : ''}`} to={AppRoute.Root}>
+              <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width={81} height={41} />
             </Link>
           </div>
-          <nav className="header__nav">
-            <ul className="header__nav-list">
-              {isAuthChecked === AuthorizationStatus.Auth ? (
-                <>
+
+          {!isLoginPage && (
+            <nav className="header__nav">
+              <ul className="header__nav-list">
+                {isAuth ? (
+                  <>
+                    <li className="header__nav-item user">
+                      <Link className="header__nav-link header__nav-link--profile" to={AppRoute.Favorites}>
+                        <div className="header__avatar-wrapper user__avatar-wrapper"></div>
+                        <span className="header__user-name user__name">{userEmail}</span>
+                        <span className="header__favorite-count">{favoriteCount}</span>
+                      </Link>
+                    </li>
+                    <li className="header__nav-item">
+                      <a className="header__nav-link" href="#" onClick={handleLogout}>
+                        <span className="header__signout">Sign out</span>
+                      </a>
+                    </li>
+                  </>
+                ) : (
                   <li className="header__nav-item user">
-                    <a className="header__nav-link header__nav-link--profile" href="#">
+                    <Link className="header__nav-link header__nav-link--profile" to={AppRoute.Login}>
                       <div className="header__avatar-wrapper user__avatar-wrapper"></div>
-                      <span className="header__user-name user__name">{userLogin}</span>
-                      <span className="header__favorite-count">3</span>
-                    </a>
-                  </li>
-                  <li className="header__nav-item">
-                    <Link
-                      className="header__nav-link"
-                      to="/"
-                      onClick={(evt) => {
-                        evt.preventDefault();
-                        dispatch(logoutAction());
-                      }}
-                    >
-                      <span className="header__signout">Sign out</span>
+                      <span className="header__login">Sign in</span>
                     </Link>
                   </li>
-                </>
-              ) : (
-                <li className="header__nav-item user">
-                  <Link to={AppRoute.Login} className="header__nav-link header__nav-link--profile">
-                    <div className="header__avatar-wrapper user__avatar-wrapper"></div>
-                    <span className="header__login">Sign in</span>
-                  </Link>
-                </li>
-              )}
-            </ul>
-          </nav>
+                )}
+              </ul>
+            </nav>
+          )}
         </div>
       </div>
     </header>

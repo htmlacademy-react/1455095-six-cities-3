@@ -18,13 +18,10 @@ import { getOffers, getOffersDataLoadingStatus, getErrorStatus } from '../../sto
 import { getAuthorizationStatus } from '../../store/user-process/user-process.selectors.ts';
 
 import { OffersType } from '../../types/offers';
-import { ReviewsType } from '../../types/reviews';
-import { reviewsMock } from '../../mocks/reviews.ts';
 
 function App() {
   const offers: OffersType = useAppSelector(getOffers);
   const isOffersDataLoadingLoading = useAppSelector(getOffersDataLoadingStatus);
-  const reviews: ReviewsType = reviewsMock;
   const isAuthChecked = useAppSelector(getAuthorizationStatus);
   const hasError = useAppSelector(getErrorStatus);
 
@@ -46,14 +43,13 @@ function App() {
             path={AppRoute.Favorites}
             element={
               <PrivateRoute>
-                <Favorites offers={offers} />
+                <Favorites />
               </PrivateRoute>
             }
           />
           <Route path={AppRoute.Login} element={<Login />} />
-          {offers.map((offer) => (
-            <Route key={offer.id} path={`${AppRoute.Offer}${offer.id}`} element={<Offer offer={offer} offers={offers} reviews={reviews} />} />
-          ))}
+          <Route path={`${AppRoute.Offer}:id`} element={<Offer />} />
+
           <Route path="*" element={<PageNotFound />} />
         </Route>
       </Routes>
